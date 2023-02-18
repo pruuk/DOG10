@@ -8,8 +8,12 @@ creation commands.
 
 """
 from evennia.objects.objects import DefaultCharacter
-
+from evennia.utils import lazy_property
 from .objects import ObjectParent
+from evennia.utils import utils as utils
+from world.handlers.traits import TraitHandler
+from evennia.utils.logger import log_file
+from world.handlers.randomness_handler import distro_return_a_roll_sans_crit as distroll
 
 
 class Character(ObjectParent, DefaultCharacter):
@@ -33,4 +37,39 @@ class Character(ObjectParent, DefaultCharacter):
 
     """
 
-    pass
+    # pull in handlers for traits and trait like attributes associated with the character
+    @lazy_property
+    def traits(self):
+        """TraitHandler that manages room traits."""
+        return TraitHandler(self)
+    
+    @lazy_property
+    def talents(self):
+        """TraitHandler that manages room talents."""
+        # note: These will be used rarely for rooms
+        return TraitHandler(self, db_attribute='talents')
+    
+    @lazy_property
+    def status_effects(self):
+        """TraitHandler that manages room status effects."""
+        return TraitHandler(self, db_attribute='status_effects')
+    
+    def at_object_creation(self):
+        "Called only at object creation and with update command."
+        # clear traits and trait-like containers
+        self.traits.clear()
+        self.talents.clear()
+        self.status_effects.clear()
+        
+        # set primary attribute scores
+        self.traits.add(key='Dex', name='Dexterity', type='static', \
+                        base=distroll(100), extra={'learn' : 0})
+        self.traits.add(key='Str', name='Strength', type='static', \
+                        base=distroll(100), extra={'learn' : 0})
+        self.traits.add(key='Vit', name='Vitality', type='static', \
+                        base=distroll(100), extra={'learn' : 0})
+        self.traits.add(key='Per', name='Perception', type='static', \
+                        base=distroll(100), extra={'learn' : 0})
+        self.traits.add(key='FOP', name='Force of Personality', type='static', \
+                        base=distroll(100), extra={'learn' : 0})
+    
