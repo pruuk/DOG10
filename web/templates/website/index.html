@@ -1,0 +1,139 @@
+{% extends "website/base.html" %}
+
+{% block titleblock %}Home{% endblock %}
+
+{% block header_ext %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col">
+    <div class="card text-center">
+      <div class="card-body">
+
+        <h1 class="card-title">Welcome to Delusions of Grandeur!</h1>
+
+        <hr />
+
+        <p class="lead">
+            An Evennia based MUD.
+        </p>
+        <p>
+          DOG is a hack and slash style Multi-User Dungeon based upon a unique world in
+          which the players' delusions become reality.
+        </p>
+          {% if webclient_enabled %}
+            <p>
+                <a href="{% url 'webclient:index' %}" class="playbutton">Play in the browser!</a>
+            </p>
+          {% endif %}
+          {% if telnet_enabled %}
+            <p>
+                Telnet: <strong>{{ server_hostname }}</strong>, port
+                {% for port in telnet_ports %}
+                    {% if not forloop.first and forloop.last %} or
+                    {% elif forloop.counter != 1 %},
+                    {% endif %}
+                    <strong>{{ port }}</strong>
+                {% endfor %}
+            </p>
+          {% endif %}
+          {% if telnet_ssl_enabled %}
+            <p>
+                Telnet (SSL): <strong>{{ server_hostname }}</strong>, port
+                {% for port in telnet_ssl_ports %}
+                    {% if not forloop.first and forloop.last %} or
+                    {% elif forloop.counter != 1 %},
+                    {% endif %}
+                    <strong>{{ port }}</strong>
+                {% endfor %}
+            </p>
+          {% endif %}
+          {% if ssh_enabled %}
+            <p>
+                SSH: <strong>{{ server_hostname }}</strong>, port
+                {% for port in ssh_ports %}
+                    {% if not forloop.first and forloop.last %} or
+                    {% elif forloop.counter != 1 %},
+                    {% endif %}
+                    <strong>{{ port }}</strong>
+                {% endfor %}
+            </p>
+          {% endif %}
+        <p>
+          For more info about Evennia, see the <a href="https://www.evennia.com">Evennia homepage</a> or check
+          out their extensive <a href="https://evennia.com/docs/latest">online documentation</a>.
+        </p>
+        <p>
+          For more info about the DOG world, see the <a href="https://docs.google.com/document/d/1YoCURidXUJab1nQy1L5_66MF5n8D1QwQlojroV4XuGw/edit#heading=h.1t5rnoaexsax">Background Doc</a> or check
+          out the <a href="https://docs.google.com/document/d/1ufoH0u0x1ay99S4QEjC0eI_dFzN--SBOmTN_gPJq0bM/edit#">Requirements Doc</a> .
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<div class="row">
+  <div class="col-12 col-md-4 mb-3">
+    <div class="card">
+      <h4 class="card-header text-center">Accounts</h4>
+
+      <div class="card-body">
+        <p>
+          There's currently <strong>{{num_accounts_connected}}</strong> connected out of a total of <strong>{{num_accounts_registered}}</strong> account{{num_accounts_registered|pluralize}} registered.
+        </p>
+        <p>
+          Of these, <strong>{{num_accounts_registered_recent}}</strong> were created this week, and <strong>{{num_accounts_connected_recent}}</strong> have connected within the last seven days.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-4 mb-3">
+    <div class="card">
+      <h4 class="card-header text-center">Recently Connected</h4>
+
+      <div class="card-body px-0 py-0">
+        <ul class="list-group">
+          {% for account in accounts_connected_recent %}
+            <li class="list-group-item">{{account.username}}&mdash;<em>{{account.last_login|timesince}} ago</em></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-4 mb-3">
+    <div class="card">
+      <h4 class="card-header text-center">Database Stats</h4>
+
+      <div class="card-body py-0 px-0">
+        <ul class="list-group">
+          <li class="list-group-item">{{num_accounts_registered}} account{{num_accounts_registered|pluralize}} (+ {{num_characters}} character{{num_characters|pluralize}})</li>
+          <li class="list-group-item">{{num_rooms}} room{{num_rooms|pluralize}} (+ {{num_exits}} exits)</li>
+          <li class="list-group-item">{{num_others}} other objects</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="card text-center">
+      <h4 class="card-header text-center">DOG</h4>
+
+      <div class="card-body">
+        <p><a href="https://evennia.com">Delusions of Grandeur</a> is an open-source MUD built on the Evennia codebase in
+        <a href="http://python.org">Python</a>, using
+        <a href="http://twistedmatrix.com">Twisted</a> and
+        <a href="http://djangoproject.com">Django</a>.<br>
+        Create the text-based multiplayer-game of your dreams - as
+        simple or as complex as you like.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
