@@ -10,6 +10,7 @@ from evennia.utils import lazy_property
 from .objects import ObjectParent
 from evennia.utils import utils as utils
 from world.handlers.traits import TraitHandler
+from world.handlers.biomes import apply_biomes
 from evennia.utils.logger import log_file
 from .objects import ObjectParent
 
@@ -90,3 +91,6 @@ class Room(ObjectParent, DefaultRoom):
         # add the overhead map symbol we want to use
         self.db.map_symbol = ['|043¡|n', '|143¡|n', '|243¡|n', '|343¡|n', '|443¡|n']
 
+        # add biome info. Biome types should be expressed in a number between 0
+        # and 1. The total set of biomes added should add up to 1.
+        apply_biomes(self)
