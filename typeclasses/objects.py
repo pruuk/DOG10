@@ -11,6 +11,8 @@ inheritance.
 
 """
 from evennia.objects.objects import DefaultObject
+from evennia.utils import lazy_property
+from world.handlers.traits import TraitHandler
 
 
 class ObjectParent:
@@ -171,4 +173,13 @@ class Object(ObjectParent, DefaultObject):
 
     """
 
-    pass
+    @lazy_property
+    def traits(self):
+        """TraitHandler that manages room traits."""
+        return TraitHandler(self)
+
+    def at_object_creation(self):
+        "Only called at creation and forced update"
+        # empty list that will hold flavor text for the object. This will be
+        # propagated down to the object at tick by the flavor controller
+        self.flavor_text = []

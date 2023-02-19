@@ -1,3 +1,4 @@
+# coding=utf-8
 """
 Command sets
 
@@ -15,6 +16,9 @@ own cmdsets by inheriting from them or directly from `evennia.CmdSet`.
 """
 
 from evennia import default_cmds
+from commands.building.building import SculptCmd, CoordinatesWormCmd, \
+    CreateBuildingCmd, FormItemCmd, CmdDig, CmdTunnel, CreateTownCmd, \
+    CmdDestroy, CmdCreate
 
 
 class CharacterCmdSet(default_cmds.CharacterCmdSet):
@@ -34,6 +38,16 @@ class CharacterCmdSet(default_cmds.CharacterCmdSet):
         #
         # any commands you add below will overload the default ones.
         #
+        ## BUILDER COMMANDS
+        self.add(SculptCmd())
+        self.add(CoordinatesWormCmd())
+        self.add(CreateBuildingCmd())
+        self.add(CreateTownCmd())
+        self.add(FormItemCmd())
+        self.add(CmdDestroy())
+        self.add(CmdTunnel())
+        self.add(CmdDig())
+        self.add(CmdCreate())
 
 
 class AccountCmdSet(default_cmds.AccountCmdSet):

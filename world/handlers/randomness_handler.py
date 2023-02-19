@@ -16,7 +16,7 @@ import random
 from evennia.utils.logger import log_file
     
 # simplest distribution curve based check
-def distro_return_a_roll(number):
+def distro_return_a_roll_sans_crit(number):
     """
     Takes in a number (integer, float, etc)
     and outputs a random number from a normal distribution
