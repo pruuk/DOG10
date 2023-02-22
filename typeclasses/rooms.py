@@ -263,3 +263,23 @@ class TownEntrance(Room):
         self.db.info['zone'] = None
         self.db.map_symbol = ['|155©|n','|255©|n','|355©|n','|455©|n','|555©|n']
         self.desc = "An entrance room for the building"
+
+
+class CombatRoomsection(Room):
+    """
+    Special type of subclass used for room subsections. These are used only for
+    dividing a room up into smaller sections during combat in order to control
+    movement and the overhead map during combat.
+    """
+    def at_object_creation(self):
+        "Called only at object creation and with update command."
+        super().at_object_creation()
+        self.traits.size.base = 10 # standard of 10 meters square
+        self.traits.enc.base = 10000
+        self.traits.rot.base = 0
+        self.traits.elev.base = 0
+        self.traits.trackmax.base =  10
+        self.db.info['outdoor room'] = True
+        self.db.info['zone'] = ['Combat Room']
+        self.db.map_symbol = ['|155╬|n','|255╬|n','|355╬|n','|455╬|n','|555╬|n']
+        self.desc = "A subsection of a room for combat"
